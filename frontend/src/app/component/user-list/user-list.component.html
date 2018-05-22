@@ -1,0 +1,107 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Добавить сотрудника</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #userForm="ngForm" novalidate>
+          <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <input id="lastName"
+                   class="form-control"
+                   name="lastName"
+                   [(ngModel)]="newUser.lastName"
+                   required
+                   #lastName="ngModel"
+                   pattern="^[А-ЯЁ][а-яё]+$"
+            />
+            <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger" role="alert">
+              <div [hidden]="!lastName.errors.required">
+                поле не может быть пустым
+              </div>
+              <div [hidden]="!lastName.errors.pattern">
+                введите фамилию латиницей с заглавной буквы
+              </div>
+             </div>
+            </div>
+          <div class="form-group">
+            <label for="firstName">Имя</label>
+            <input id="firstName"
+                   class="form-control"
+                   name="firstName"
+                   [(ngModel)]="newUser.firstName"
+                   required
+                   #firstName="ngModel"
+                   pattern="^[А-ЯЁ][а-яё]+$"
+            />
+            <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger" role="alert">
+              <div [hidden]="!firstName.errors.required">
+                поле не может быть пустым
+              </div>
+              <div [hidden]="!firstName.errors.pattern">
+                введите имя латиницей с заглавной буквы
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="middleName">Отчество</label>
+            <input id="middleName"
+                   class="form-control"
+                   name="middleName"
+                   [(ngModel)]="newUser.middleName"
+                   required
+                   #middleName="ngModel"
+                   pattern="^[А-ЯЁ][а-яё]+$"
+            />
+            <div *ngIf="middleName.invalid && middleName.touched" class="alert alert-danger" role="alert">
+              <div [hidden]="!middleName.errors.required">
+                поле не может быть пустым
+              </div>
+              <div [hidden]="!middleName.errors.pattern">
+                введите отчество латиницей с заглавной буквы
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="form-group">
+              <button [disabled]="userForm.invalid"
+                      class="btn btn-default" (click)="userFormSubmit(userForm)"
+                      data-dismiss="modal" aria-label="Close">Добавить</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="custom-button">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Добавить</button>
+  <button type="button" class="btn btn-warning" (click)="displayTheDeleteButton()">Удалить</button>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Фамилия</th>
+    <th>Имя</th>
+    <th>Отчество</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{user.lastName}}</td>
+    <td>{{user.firstName}}</td>
+    <td>{{user.middleName}}</td>
+    <div *ngIf="isClicked">
+      <td><button class="btn btn-danger" (click)="deleteUserById(user.userId)">X</button><td>
+    </div>
+  </tr>
+  </tbody>
+</table>
+
+

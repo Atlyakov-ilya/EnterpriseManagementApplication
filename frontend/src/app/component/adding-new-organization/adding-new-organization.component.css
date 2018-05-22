@@ -1,0 +1,9 @@
+.org-type-list{
+  height: 250px;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+.button-right{
+  float:right;
+}

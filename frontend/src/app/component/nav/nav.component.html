@@ -1,0 +1,31 @@
+<ngb-tabset #t="ngbTabset">
+  <ngb-tab id="tab-selectbyid1" title="Организация">
+    <ng-template ngbTabContent>
+      <div class="custom-button">
+      <button routerLink="/add_org" type="button" class="btn btn-primary" (click)="ngOnInit()">Добавить</button>
+      <button type="button" class="btn btn-warning" (click)="displayTheDeleteButton()">Удалить</button>
+      </div>
+      <ul class="list-group org-list">
+        <li listBackground class="list-group-item opacity"
+            *ngFor="let org of organizations"
+            [routerLink]="['add_org', org.orgId]"
+        >{{org.orgName}}<span [ngClass]="{'delete' : isClicked}" (click)="deleteOrganizationById(org.orgId)"></span></li>
+      </ul>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="tab-selectbyid2">
+    <ng-template ngbTabTitle><b>Справки</b></ng-template>
+    <ng-template ngbTabContent>
+      <ul class="list-group">
+        <li listBackground class="list-group-item d-flex justify-content-between align-items-center" routerLink="/type_list" >
+          Типы организаций
+        </li>
+        <li listBackground class="list-group-item d-flex justify-content-between align-items-center" routerLink="/user_list">
+          Пользователи
+        </li>
+      </ul>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+

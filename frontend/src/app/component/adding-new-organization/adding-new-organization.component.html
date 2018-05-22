@@ -1,0 +1,221 @@
+<div class="block">
+  <form #organizationForm="ngForm" novalidate>
+    <div class="form-group">
+      <input name="orgName"
+             type="text"
+             class="form-control"
+             placeholder="Наименование организации"
+             [(ngModel)]="organization.orgName"
+             #orgName="ngModel"
+             required/>
+      <div *ngIf="orgName.invalid && orgName.touched" class="alert alert-danger" role="alert">
+        <div [hidden]="!orgName.errors.required">
+          поле не может быть пустым
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+    <div class="form-group col-5">
+      <label for="orgDescription">Сведение</label>
+      <textarea name="orgDescription"
+                class="form-control"
+                id="orgDescription"
+                rows="4"
+                placeholder="Сведение o организации"
+                [(ngModel)]="organization.orgDescription"
+                #orgDescription="ngModel"
+                ></textarea>
+    </div>
+      <div class="form-group col-5 offset-2">
+      <label for="address">Адрес</label>
+      <input name="address"
+             type="text"
+             class="form-control"
+             id="address"
+             [(ngModel)]="organization.address"
+             #address="ngModel"
+             />
+
+      <label for="phoneNumber">Телефон</label>
+      <input name="phoneNumber"
+             type="text"
+             class="form-control"
+             id="phoneNumber"
+             [(ngModel)]="organization.phoneNumber"
+             #phoneNumber="ngModel"
+            >
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="numberOfStaff" class="col-sm-2 col-form-label col-form-label-sm">Кол.сотрудников</label>
+      <input name="numberOfStaff"
+             type="text"
+             class="form-control col-3"
+             id="numberOfStaff"
+             placeholder="101"
+             [(ngModel)]="organization.numberOfStaff"
+             #numberOfStaff="ngModel"
+             pattern="^[ 0-9]+$"
+             />
+      <div *ngIf="numberOfStaff.invalid && numberOfStaff.touched"
+           class="alert alert-danger form-group col-5 offset-2" role="alert">
+        <div [hidden]="!numberOfStaff.errors.pattern">
+          поле может содержать только цифры
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="additionalInformation"class="col-sm-2 col-form-label col-form-label-sm">Доп.<br/>информация</label>
+      <textarea name="additionalInformation"
+                class="form-control col-10"
+                id="additionalInformation"
+                rows="4"
+                placeholder="Дополнительная информация"
+                [(ngModel)]="organization.additionalInformation"
+                #additionalInformation="ngModel"
+                ></textarea>
+    </div>
+
+    <hr/>
+    <div class="form-group row">
+      <label for="typeOfOrganization" class="col-sm-1 col-form-label col-form-label-sm">Тип:</label>
+      <input name="typeOfOrganization"
+             type="text"
+             class="form-control col-5"
+             id="typeOfOrganization"
+             placeholder="Тип организации"
+             [(ngModel)]="organization.typeOfOrganization"
+             value="{{orgType.nameOrgType}}"
+             #typeOfOrganization="ngModel"
+            />
+      <button type="button" class="btn btn-secondary" (click)="getOrganizationTypeList()" data-toggle="modal" data-target="#typeModal" data-whatever="@mdo">...</button>
+    </div>
+
+    <hr/>
+    <div class="form-group row">
+      <label for="director" class="col-sm-2 col-form-label col-form-label-sm">Управляющий:</label>
+      <input name="director"
+             type="text"
+             class="form-control col-3"
+             id="director"
+             placeholder="Управляющий"
+             [(ngModel)]="organization.director"
+             value="{{user.lastName}}.{{user.firstName | slice:0:1}}.{{user.middleName | slice:0:1}}"
+             #director="ngModel"
+            />
+      <button type="button" class="btn btn-secondary" (click)="getUserList()" data-toggle="modal" data-target="#userModal" data-whatever="@mdo">...</button>
+
+      <input name="date"
+             type="date"
+             class="form-control col-3 offset-2"
+             placeholder="Дата"
+             [(ngModel)]="organization.date"
+             #date="ngModel"
+             />
+    </div>
+
+    <hr/>
+
+    <button type="submit"
+             class="btn btn-primary button-right"
+            [disabled]="!organizationForm.valid"
+            *ngIf="!showEditFlag" (click)="addNewOrganization(organizationForm)">Сохронить</button>
+
+      <button  type="submit"
+               class="btn btn-primary button-right"
+               [disabled]="!organizationForm.valid"
+               *ngIf="showEditFlag" (click)="editOrganization(organizationForm, organization)">Изменить</button>
+
+  </form>
+
+    <!-- Модальное окно orgType-->
+    <div class="bd-example">
+      <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4>Выбрать тип</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h4>Поиск:</h4>
+              <form>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <input type="text"
+                           class="form-control"
+                           [(ngModel)]="searchType"
+                           [ngModelOptions]="{standalone: true}"
+                           value="{{orgType.nameOrgType}}"
+                    />
+                  </div>
+                </div>
+              </form>
+              <ul class="list-group org-type-list">
+                <li listBackground class="list-group-item opacity"
+                    *ngFor="let type of orgTypes | organizationTypeFilter: searchType:'nameOrgType';"
+                    (click)="selectTypeByName(type)">{{type.nameOrgType}}</li>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Выбрать</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Модальное окно user-->
+  <div class="bd-example">
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Выбрать сотрудника</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h4>Поиск:</h4>
+            <form>
+              <div class="form-group">
+                <div class="input-group mb-3">
+                  <input type="text"
+                         class="form-control"
+                         [(ngModel)]="searchUser"
+                         [ngModelOptions]="{standalone: true}"
+                         value="{{user.lastName}}.{{user.firstName | slice:0:1}}.{{user.middleName | slice:0:1}}"
+                  />
+                </div>
+              </div>
+            </form>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let user of users | userFilter: searchUser: 'firstName': 'lastName' : 'middleName';" (click)="selectUser(user)">
+                <td>{{user.lastName}}</td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.middleName}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Выбрать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

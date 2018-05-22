@@ -1,0 +1,43 @@
+<div class="modal fade" id="orgTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Добавить сотрудника</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label for="nameOrgType" class="form-control-label">Тип:</label>
+            <input type="text" class="form-control" id="nameOrgType" formControlName="nameOrgType">
+          </div>
+          <div *ngIf="form.get('nameOrgType').invalid && form.get('nameOrgType').touched" class="alert alert-danger">
+            <span *ngIf="form.get('nameOrgType').errors['required']">Поле Тип не может быть пустым</span>
+            <span *ngIf="form.get('nameOrgType').errors['minlength']">Поле Тип не может быть меньше 3 символов</span>
+            <span *ngIf="form.get('nameOrgType').errors['nameOrgTypeExist']">Такой тип уже существует</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-dismiss="modal" [disabled]="form.invalid"
+                (click)="saveType(form)">Добавить</button>
+      </div>
+    </div>v
+  </div>
+</div>
+
+<div class="custom-button">
+<button class="btn btn-primary" data-toggle="modal" data-target="#orgTypeModal">Добавить</button>
+<button type="button" class="btn btn-warning" (click)="displayTheDeleteButton()">Удалить</button>
+</div>
+
+
+<ul class="list-group org-type-list">
+  <li class="list-group-item opacity"
+      *ngFor="let type of orgTypes">{{type.nameOrgType}}
+    <span [ngClass]="{'delete' : isClicked}" (click)="deleteTypeById(type.orgTypeId)"></span></li>
+</ul>
+
+

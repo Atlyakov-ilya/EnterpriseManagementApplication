@@ -1,0 +1,40 @@
+.org-list{
+  height: 400px;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+li, button{
+  outline: none;
+}
+
+.delete{
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  border:none;
+  outline: none;
+}
+
+.delete:before,
+.delete:after {
+  content: "";
+  position: absolute;
+  top: 21px;
+  left: 10px;
+  width: 26px;
+  height: 4px;
+  background: #e62f57;
+}
+
+.delete:before {
+  webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.delete:after {
+  webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}

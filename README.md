@@ -1,4 +1,4 @@
-# Getting Started
+# Installing and Running the Application
 
  1) `git clone https://github.com/Atlyakov-ilya/EnterpriseManagementApplication.git`<br/>
  2) Open Command Prompt and type `cd EnterpriseManagementApplicatio` (root folder) <br/>
